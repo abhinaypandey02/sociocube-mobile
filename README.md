@@ -1,56 +1,16 @@
-# Sociocube Mobile
+# app
 
-A Flutter app with GraphQL integration and Instagram-like bottom navigation.
+A new Flutter project.
 
-## Features
+## Getting Started
 
-- GraphQL client setup for backend communication
-- Instagram-style bottom navigation with 3 tabs
-- Placeholder screens for Home, Search, and Profile
-- Material Design 3 theme
+This project is a starting point for a Flutter application.
 
-## Setup
+A few resources to get you started if this is your first Flutter project:
 
-1. Install Flutter dependencies:
-```bash
-flutter pub get
-```
+- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-2. Update the GraphQL endpoint in `lib/services/graphql_service.dart`:
-```dart
-static const String _endpoint = 'https://your-actual-graphql-endpoint.com/graphql';
-```
-
-3. Run the app:
-```bash
-flutter run
-```
-
-## Project Structure
-
-```
-lib/
-├── main.dart                 # App entry point with GraphQL setup
-├── screens/
-│   ├── main_screen.dart     # Main screen with bottom navigation
-│   ├── home_screen.dart     # Home screen placeholder
-│   ├── search_screen.dart   # Search screen placeholder
-│   └── profile_screen.dart  # Profile screen placeholder
-└── services/
-    └── graphql_service.dart # GraphQL client and queries
-```
-
-## Dependencies
-
-- `graphql_flutter`: GraphQL client for Flutter
-- `provider`: State management (ready for future use)
-- `cupertino_icons`: iOS-style icons
-
-## Next Steps
-
-1. Implement actual GraphQL queries and mutations
-2. Add state management with Provider
-3. Create data models for posts, users, etc.
-4. Implement authentication
-5. Add image handling and caching
-6. Implement actual screen functionality 
+For help getting started with Flutter development, view the
+[online documentation](https://docs.flutter.dev/), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.
