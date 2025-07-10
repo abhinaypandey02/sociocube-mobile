@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class RestService {
-  static const String baseUrl = 'https://your-rest-api.com/api';
+  static const String baseUrl = 'https://sociocube.com/api';
 
   // Example GET request
   static Future<http.Response> getExample() async {
