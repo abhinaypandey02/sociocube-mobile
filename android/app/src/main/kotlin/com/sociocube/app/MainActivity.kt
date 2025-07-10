@@ -1,4 +1,4 @@
-package com.example.sociocube
+package com.sociocube.app
 
 import io.flutter.embedding.android.FlutterActivity
 
