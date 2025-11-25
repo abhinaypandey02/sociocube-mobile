@@ -16,20 +16,9 @@ class AuthNotifier extends AsyncNotifier<AuthState> {
 
   @override
   Future<AuthState> build() async {
-    final storage = ref.read(authStorageProvider);
-    final api = ref.read(authApiProvider);
-
-    final refreshToken = await storage.getRefreshToken();
+    final accessToken = await getNewAccessToken();
     _hasInitialized = true;
-
-    if (refreshToken == null) return AuthState();
-
-    final accessToken = await api.refreshAccessToken(refreshToken);
-    if (accessToken != null && !JwtDecoder.isExpired(accessToken)) {
-      return AuthState(accessToken: accessToken);
-    }
-
-    return AuthState();
+    return AuthState(accessToken: accessToken);
   }
 
   Future<void> login({required String email, required String password}) async {
@@ -78,10 +67,37 @@ class AuthNotifier extends AsyncNotifier<AuthState> {
     }
   }
 
+  Future<String?> getNewAccessToken() async {
+    try {
+      final api = ref.read(authApiProvider);
+      final storage = ref.read(authStorageProvider);
+      final refreshToken = await storage.getRefreshToken();
+      if (refreshToken == null) {
+        return null;
+      }
+      final accessToken = await api.refreshAccessToken(refreshToken);
+      if (accessToken != null && !JwtDecoder.isExpired(accessToken)) {
+        return accessToken;
+      }
+      return null;
+    } catch (error, stackTrace) {
+      state = AsyncError(error, stackTrace);
+      rethrow;
+    }
+  }
+
+  Future<String?> getAccessToken() async {
+    if(state.value?.accessToken != null && !JwtDecoder.isExpired(state.value!.accessToken!)) {
+      return state.value!.accessToken;
+    }
+    return await getNewAccessToken();
+  }
+
   Future<void> logout() async {
     try {
       final storage = ref.read(authStorageProvider);
       await storage.clearRefreshToken();
+
       state = AsyncData(AuthState());
     } catch (error, stackTrace) {
       state = AsyncError(error, stackTrace);

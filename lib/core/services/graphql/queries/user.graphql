@@ -1,0 +1,22 @@
+query GetCurrentUser {
+    user: getCurrentUser {
+      id
+      bio
+      email
+      username
+      name
+      photo
+      phone
+      role
+      emailVerified
+      isOnboarded
+      instagramStats {
+        username
+        isVerified
+      }
+    }
+      getUnreadNotifications
+      getUnreadChats {
+          id
+      }
+  }

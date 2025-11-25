@@ -1,0 +1,491 @@
+"""Exposes a URL that specifies the behavior of this scalar."""
+directive @specifiedBy(
+  """The URL that specifies the behavior of this scalar."""
+  url: String!
+) on SCALAR
+
+"""
+Indicates exactly one field must be supplied and this field must not be `null`.
+"""
+directive @oneOf on INPUT_OBJECT
+
+input AddPortfolioArgs {
+  imageURL: String
+  caption: String
+  link: String
+}
+
+input AddWebPushSubscriptionInput {
+  endpoint: String!
+  keys: WebPushKeysInput!
+}
+
+type Application {
+  comment: String
+  status: ApplicationStatus!
+  id: Float!
+  createdAt: Float!
+  user: User
+  answers: [ApplicationAnswer!]!
+  dueDate: Float
+  trackingLink: String
+  delivery: String
+  reviewByMe: Review
+  posting: Posting
+}
+
+type ApplicationAnswer {
+  question: Float!
+  text: String!
+}
+
+input ApplicationAnswerInput {
+  question: Float!
+  text: String!
+}
+
+enum ApplicationStatus {
+  Applied
+  Rejected
+  Denied
+  Shortlisted
+  Selected
+}
+
+input ChangeRoleInput {
+  newRole: Roles!
+}
+
+type CitySelectOption {
+  value: Int!
+  label: String!
+}
+
+type Conversation {
+  id: Float!
+  application: Float
+  posting: Posting
+  updatedAt: Float!
+  messages(page: Float): [Message!]!
+  preview: Preview
+  user: User
+}
+
+enum Eligibility {
+  Closed
+  Unauthorized
+  NotOnboarded
+  LessFollowers
+  NotAgeGroup
+  NotCreator
+  Eligible
+  GenderMismatch
+  LocationMismatch
+}
+
+type GetCountsResponse {
+  total: Float!
+  creators: Float!
+  agency: Float!
+  brands: Float!
+  campaigns: Float!
+}
+
+type GetFeaturedPostsResponse {
+  mediaURL: String!
+  postURL: String!
+  thumbnailURL: String!
+  likes: Float!
+  er: Float!
+  creatorName: String!
+  creatorUsername: String!
+  creatorImage: String!
+  creatorVerified: Boolean!
+}
+
+type GetRankedAgencyResponse {
+  user: User!
+  totalApplications: Float!
+}
+
+type InstagramMedia {
+  timestamp: String!
+  thumbnail: String!
+  likes: Int!
+  comments: Int!
+  link: String!
+  er: Float
+  caption: String
+}
+
+type InstagramStats {
+  followers: Int!
+  username: String!
+  mediaCount: Int!
+  averageLikes: Int!
+  averageComments: Int!
+  er: Float!
+  isVerified: Boolean!
+}
+
+input InviteToPostingInput {
+  postingId: Float!
+  email: String!
+  role: PostingRole!
+}
+
+type Location {
+  city: String
+  country: String
+  address: String
+  currency: String!
+}
+
+type LocationID {
+  city: Float
+  country: Float
+  address: String
+}
+
+type Message {
+  body: String!
+  createdAt: Float!
+  by: Float!
+}
+
+type Mutation {
+  applyToPosting(postingID: Float!, answers: [ApplicationAnswerInput!]!): Boolean!
+  likeApplication(id: Float!): Boolean!
+  updateShortlist(accepted: Boolean!, id: Float!): Boolean!
+  updateApplicationDelivery(delivery: String, id: Float!): Boolean!
+  updateApplicationDueDate(dueDate: Float, id: Float!): Boolean!
+  updateApplicationsDueDate(dueDate: Float, postingID: Float!): Boolean!
+  updateApplicationTrackingLink(trackingLink: String, id: Float!): Boolean!
+  rejectApplication(id: Float!): Boolean!
+  shortlistUser(postingID: Float!, userID: Float!): Boolean!
+  shortlistAgency(input: ShortlistAgencyInput!): Boolean!
+  sendMessage(body: String!, userID: Int!): Boolean!
+  sendApplicationMessage(body: String!, application: Int!): Boolean!
+  readMessage(conversationID: Int!): Boolean!
+  updatePortfolio(data: UpdatePortfolioArgs!): Boolean!
+  addPortfolio(data: AddPortfolioArgs!): Portfolio!
+  deletePortfolio(id: Float!): Boolean!
+  createPosting(newPosting: NewPostingInput!): Float
+  updatePosting(updatedPosting: UpdatePostingInput!, id: Float!): Boolean!
+  pausePosting(postingID: Float!): Boolean!
+  deletePosting(postingID: Float!): Boolean!
+  resumePosting(postingID: Float!): Boolean!
+  addPostingScript(content: String!, postingID: Float!): Float!
+  updatePostingScript(content: String!, scriptID: Float!): Boolean!
+  deletePostingScript(scriptID: Float!): Boolean!
+  sendAnnouncement(body: String!, postingID: Float!): Boolean!
+  rejectPosting(reason: String!, postingID: Float!): Boolean!
+  acceptPosting(postingID: Float!): Boolean!
+  inviteToPosting(input: InviteToPostingInput!): Float!
+  deleteInvitation(accessId: Float!): Boolean!
+  acceptInvitation(token: String!): Boolean!
+  sendResetPasswordEmail(email: String!): Boolean
+  sendVerificationEmail: Boolean!
+  resetPassword(newPassword: String!, token: String!): Boolean!
+  sendReview(args: SendReviewArgs!): Boolean!
+  updateInstagramUsername(username: String!): UpdateInstagramUsernameResponse!
+  unlinkSocialAccount: Boolean!
+  updateUser(updatedUser: UpdateUserInput!): Boolean!
+  updateUserLocation(updatedLocation: UpdateLocation!): Boolean!
+  disconnectInstagram: Boolean!
+  changePassword(newPassword: String!, oldPassword: String!): Boolean!
+  deleteUser(password: String!): Boolean!
+  deleteUserByAdmin(reason: String!, userId: Int!): Boolean!
+  changeRole(input: ChangeRoleInput!): Boolean!
+  toggleUserLike(liked: Boolean!, id: Float!): Boolean!
+  addWebPushSubscription(data: AddWebPushSubscriptionInput!): Boolean!
+}
+
+input NewPostingInput {
+  title: String!
+  description: String!
+  deliverables: [String!]
+  externalLink: String
+  price: Int
+  barter: Boolean!
+  platform: PostingPlatforms!
+  minimumAge: Int
+  maximumAge: Int
+  minimumFollowers: Int
+  currencyCountry: Int
+  countries: [Int!]
+  cities: [Int!]
+  states: [Int!]
+  gender: String
+  email: String
+  phone: String
+  questions: [PostingQuestionsInput!]
+}
+
+type Notification {
+  image: String
+  title: String!
+  id: Float!
+  text: String!
+  url: String!
+  createdAt: Float!
+}
+
+type Portfolio {
+  caption: String
+  link: String
+  imageURL: String
+  id: Int!
+}
+
+type Posting {
+  title: String!
+  description: String!
+  platform: PostingPlatforms!
+  deliverables: [String!]
+  countries: [Float!]
+  externalLink: String
+  price: Int
+  barter: Boolean!
+  minimumFollowers: Int
+  minimumAge: Int
+  maximumAge: Int
+  open: Boolean!
+  id: Float!
+  createdAt: Float!
+  updatedAt: Float!
+  hasApplied: Boolean
+  inReview: Boolean!
+  eligibility: Eligibility
+  currencyCountry: Int
+  gender: String
+  access: [PostingAccess!]
+  currency: String
+  questions: [PostingQuestion!]
+  scripts: [PostingScript!]
+  defaultDueDate: Float
+  agencies: [User!]!
+  applicationsCount: Int!
+  agencyApplicationsCount: Int!
+  selectedCount: Int!
+  selectedCreators: [User!]!
+  scriptsCount: Int!
+  recommendations: [Recommendation!]!
+  cities: [CitySelectOption!]!
+  states: [CitySelectOption!]!
+}
+
+type PostingAccess {
+  id: Float!
+  email: String
+  role: PostingRole!
+  user: User
+  posting: Posting
+}
+
+enum PostingPlatforms {
+  INSTAGRAM
+  YOUTUBE
+  TIKTOK
+  LINKEDIN
+  FACEBOOK
+  X
+}
+
+type PostingQuestion {
+  id: Float!
+  text: String!
+  required: Boolean!
+}
+
+input PostingQuestionsInput {
+  id: Int
+  text: String
+  required: Boolean
+}
+
+enum PostingRole {
+  ADMIN
+  AGENCY
+  OWNER
+}
+
+type PostingScript {
+  id: Float!
+  content: String!
+}
+
+type Preview {
+  text: String!
+  hasRead: Boolean!
+  at: Float!
+}
+
+type Pricing {
+  starting: Float
+}
+
+input PricingInput {
+  starting: Float
+}
+
+type Query {
+  getUserApplications: [Application!]!
+  getUserApplication(id: Int!): Application
+  getPostingApplications(postingID: Int!): [Application!]!
+  getPostingSelected(page: Int, postingID: Int!): [Application!]!
+  getPostingAgencyApplications(input: Float!): [Application!]!
+  getChats: [Conversation!]!
+  getUnreadChats: [Conversation!]!
+  getChat(username: String!): Conversation
+  getApplicationChat(application: Float!): Conversation
+  getCities(stateID: Int, countryID: Int!): [CitySelectOption!]!
+  getStates(countryID: Int!): [CitySelectOption!]!
+  getNotifications: [Notification!]!
+  getUnreadNotifications: [Float!]!
+  getUserPostings(page: Float): [Posting!]!
+  getUserPostingsLatest(username: String!, limit: Int): [Posting!]!
+  getAllPostings(page: Float!): [Posting!]!
+  getFeaturedPostings: [Posting!]!
+  getPosting(owned: Boolean, id: Int!): Posting
+  getPostingsInReview: [Posting!]!
+  getInvitationDetail(token: String!): PostingAccess
+  verifyEmail(token: String!): Boolean!
+  getCurrentUser: User
+  getFeaturedSellers: [User!]!
+  getFeaturedPosts: [GetFeaturedPostsResponse!]!
+  getSeller(username: String!): User
+  searchSellers(filters: SearchSellersFilters!): [User!]
+  isUsernameAvailable(username: String!): Boolean!
+  getRankedAgency(page: Float!): [GetRankedAgencyResponse!]!
+  getLikedCreators: [User!]!
+  getOverrideToken(id: Float!): String!
+  getCounts: GetCountsResponse!
+}
+
+type Recommendation {
+  user: User!
+  status: ApplicationStatus
+}
+
+type Review {
+  rating: Float!
+  feedback: String
+  name: String
+  username: String
+}
+
+enum Roles {
+  Admin
+  Brand
+  Creator
+  Agency
+}
+
+input SearchSellersFilters {
+  query: String
+  verifiedOnly: Boolean
+  sortBy: SearchSellersSort
+}
+
+enum SearchSellersSort {
+  FollowersDesc
+  FollowersAsc
+  PricingDesc
+  PricingAsc
+  Er
+}
+
+input SendReviewArgs {
+  rating: Float!
+  feedback: String
+  application: Float!
+}
+
+input ShortlistAgencyInput {
+  applicationId: Float!
+  role: PostingRole!
+}
+
+type UpdateInstagramUsernameResponse {
+  photo: String
+  bio: String!
+  username: String!
+  name: String!
+}
+
+input UpdateLocation {
+  address: String
+  city: Float
+  country: Float
+}
+
+input UpdatePortfolioArgs {
+  id: Float!
+  caption: String
+  link: String
+}
+
+input UpdatePostingInput {
+  description: String
+  deliverables: [String!]
+  title: String
+  externalLink: String
+  price: Int
+  barter: Boolean
+  platform: PostingPlatforms
+  minimumAge: Float
+  maximumAge: Float
+  minimumFollowers: Float
+  currencyCountry: Int
+  countries: [Int!]
+  cities: [Int!]
+  states: [Int!]
+  gender: String
+  questions: [PostingQuestionsInput!]
+}
+
+input UpdateUserInput {
+  name: String
+  phone: String
+  bio: String
+  photo: String
+  categories: [String!]
+  gender: String
+  pricing: PricingInput
+  role: Roles
+  username: String
+  dob: String
+}
+
+type User {
+  id: Float!
+  name: String
+  bio: String
+  photo: String
+  email: String
+  phone: String
+  role: Roles!
+  isOnboarded: Boolean
+  emailVerified: Boolean!
+  categories: [String!]
+  gender: String
+  dob: String
+  username: String
+  pricing: Pricing
+  isLiked: Boolean!
+  official: Boolean!
+  location: Location
+  locationID: LocationID
+  instagramStats: InstagramStats
+  instagramMedia: [InstagramMedia!]
+  portfolio: [Portfolio!]!
+  reviews: [Review!]!
+  pushSubscriptions: [String!]!
+}
+
+input WebPushKeysInput {
+  p256dh: String!
+  auth: String!
+}
+
