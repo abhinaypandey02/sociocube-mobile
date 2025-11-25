@@ -6,12 +6,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Service for handling GraphQL operations
 /// Provides a configured GraphQL client with authentication
-class GraphQLService {
-  GraphQLClient? _client;
-  final Ref _ref;
-
-  GraphQLService(this._ref) {
-    _client = _createClient();
+class GraphQLService extends Notifier<GraphQLClient> {
+  @override
+  GraphQLClient build() {
+    return _createClient();
   }
 
   /// Create a GraphQL client with authentication and error handling
@@ -21,7 +19,7 @@ class GraphQLService {
     final authLink = AuthLink(
       getToken: () async {
         // Get fresh token from auth provider on every request
-        final token = await _ref
+        final token = await ref
             .read(authStateProvider.notifier)
             .getAccessToken();
         return token != null ? 'Bearer $token' : null;
@@ -55,7 +53,7 @@ class GraphQLService {
   /// Execute a query
   Future<QueryResult> query(QueryOptions options) async {
     try {
-      final result = await _client!.query(options);
+      final result = await state.query(options);
       _handleErrors(result);
       return result;
     } catch (e) {
@@ -69,7 +67,7 @@ class GraphQLService {
   /// Execute a mutation
   Future<QueryResult> mutate(MutationOptions options) async {
     try {
-      final result = await _client!.mutate(options);
+      final result = await state.mutate(options);
       _handleErrors(result);
       return result;
     } catch (e) {
@@ -118,6 +116,4 @@ class GraphQLService {
   }
 }
 
-final graphqlServiceProvider = Provider<GraphQLService>((ref) {
-  return GraphQLService(ref);
-});
+final graphqlServiceProvider = NotifierProvider<GraphQLService, GraphQLClient>(GraphQLService.new);

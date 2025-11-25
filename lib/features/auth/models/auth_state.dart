@@ -1,17 +1,15 @@
-import './user.dart';
-
 // Auth state
 class AuthState {
-  final User? user;
+  final int? userId;
   final String? accessToken;
 
-  AuthState({this.user, this.accessToken});
+  AuthState({this.userId, this.accessToken});
 
   bool get isAuthenticated => accessToken != null;
 
-  AuthState copyWith({User? user, String? accessToken}) {
+  AuthState copyWith({int? userId, String? accessToken}) {
     return AuthState(
-      user: user ?? this.user,
+      userId: userId ?? this.userId,
       accessToken: accessToken ?? this.accessToken,
     );
   }

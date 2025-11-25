@@ -1,5 +1,4 @@
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'user.dart';
 
 class AuthResponse {
   final String accessToken;
@@ -19,10 +18,8 @@ class AuthResponse {
   }
 
   /// Convert to User entity
-  User toUser() {
+  int toUserId() {
     final decoded = JwtDecoder.decode(accessToken);
-    return User(
-      id: decoded['id'] ?? '',
-    );
+    return decoded['id'] ?? 0;
   }
 }
