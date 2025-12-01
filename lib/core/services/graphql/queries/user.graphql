@@ -24,3 +24,16 @@ query GetCurrentUser {
 mutation UpdateUser($updatedUser: UpdateUserInput!) {
   updateUser(updatedUser: $updatedUser)
 }
+
+mutation UpdateUserLocation($updatedLocation: UpdateLocation!) {
+    updateUserLocation(updatedLocation: $updatedLocation)
+  }
+
+  mutation UpdateInstagramUsername($username: String!) {
+    updateInstagramUsername(username: $username){
+      photo
+      bio
+      username
+      name
+    }
+  }

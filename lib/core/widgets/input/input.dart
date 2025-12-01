@@ -10,6 +10,7 @@ class Input extends StatelessWidget {
   final Color variantColor;
   final String? Function(String?)? validator;
   final TextInputType? keyboardType;
+  final void Function(String?)? onChanged;
 
   const Input({
     super.key,
@@ -20,6 +21,7 @@ class Input extends StatelessWidget {
     this.variantColor = AppColors.primary,
     this.validator,
     this.keyboardType,
+    this.onChanged,
   });
 
   @override
@@ -44,6 +46,7 @@ class Input extends StatelessWidget {
         ],
         TextFormField(
           controller: controller,
+          onChanged: onChanged,
           obscureText: obscureText,
           keyboardType: keyboardType,
           validator: validator,

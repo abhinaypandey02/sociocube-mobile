@@ -1,11 +1,11 @@
 import 'types.dart';
-import 'widgets/steps/welcome_step.dart';
-import 'widgets/steps/share_moments_step.dart';
+import 'widgets/steps/role.dart';
+import 'widgets/steps/socials.dart';
 
 // Define all onboarding steps in an array
 const List<OnboardingStepConfig> onboardingSteps = [
-  OnboardingStepConfig(builder: WelcomeStep.new),
-  OnboardingStepConfig(builder: ShareMomentsStep.new),
+  OnboardingStepConfig(builder: RoleStep.new),
+  OnboardingStepConfig(builder: SocialsStep.new),
 ];
 
 /// Cached value for total number of onboarding steps

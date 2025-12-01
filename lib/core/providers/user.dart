@@ -28,25 +28,36 @@ class UserProvider extends AsyncNotifier<Query$GetCurrentUser?> {
   void updateUser(Map<String, dynamic> user, {bool skipMutation = false}) {
     final current = state.value;
     if (current?.user == null) return;
-    if (current != null) {
-      state = AsyncData(
-        Query$GetCurrentUser.fromJson({
-          ...current.toJson(),
-          'user': {...current.user!.toJson(), ...user},
-        }),
-      );
-      if (!skipMutation) {
-        ref
-            .read(graphqlServiceProvider.notifier)
-            .mutate(
-              MutationOptions(
-                document: documentNodeMutationUpdateUser,
-                variables: Variables$Mutation$UpdateUser(
-                  updatedUser: Input$UpdateUserInput.fromJson(user),
-                ).toJson(),
-              ),
-            );
-      }
+
+    final updatedUserJson = <String, dynamic>{
+      ...current!.user!.toJson(),
+      ...user,
+    };
+
+    if (user['instagramStats'] != null) {
+      updatedUserJson['instagramStats'] = <String, dynamic>{
+        ...(current.user!.instagramStats?.toJson() ?? {}),
+        ...user['instagramStats'],
+      };
+    }
+
+    state = AsyncData(
+      Query$GetCurrentUser.fromJson(<String, dynamic>{
+        ...current.toJson(),
+        'user': updatedUserJson,
+      }),
+    );
+    if (!skipMutation) {
+      ref
+          .read(graphqlServiceProvider.notifier)
+          .mutate(
+            MutationOptions(
+              document: documentNodeMutationUpdateUser,
+              variables: Variables$Mutation$UpdateUser(
+                updatedUser: Input$UpdateUserInput.fromJson(user),
+              ).toJson(),
+            ),
+          );
     }
   }
 }

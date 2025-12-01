@@ -17,7 +17,6 @@ abstract class BaseOnboardingStep extends HookConsumerWidget {
   final String title;
   final String subtitle;
   final bool isSkippable;
-  bool isNextEnabled;
 
   BaseOnboardingStep({
     super.key,
@@ -27,11 +26,14 @@ abstract class BaseOnboardingStep extends HookConsumerWidget {
     required this.title,
     required this.subtitle,
     this.isSkippable = false,
-    this.isNextEnabled = true,
   });
 
   /// Override this method to provide the unique content for each step
-  Widget buildStepContent(BuildContext context, WidgetRef ref);
+  /// Return a tuple of (Widget, ValueNotifier<bool>) where the notifier controls next button state
+  (Widget, ValueNotifier<bool>) buildStepContent(
+    BuildContext context,
+    WidgetRef ref,
+  );
 
   /// Override this method to add custom logic when next button is pressed
   /// This will be called before the parent's onNext callback
@@ -40,6 +42,7 @@ abstract class BaseOnboardingStep extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isLoading = useState(false);
+    final (content, isNextEnabled) = buildStepContent(context, ref);
 
     Future<void> _handleNext() async {
       if (isLoading.value) return;
@@ -106,7 +109,7 @@ abstract class BaseOnboardingStep extends HookConsumerWidget {
                 ),
 
                 const SizedBox(height: 48),
-                buildStepContent(context, ref),
+                content,
               ],
             ),
           ),
@@ -118,7 +121,7 @@ abstract class BaseOnboardingStep extends HookConsumerWidget {
           updateStep: updateStep,
           onNext: _handleNext,
           isLoading: isLoading.value,
-          isDisabled: !isNextEnabled,
+          isDisabled: !isNextEnabled.value,
         ),
       ],
     );
