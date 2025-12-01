@@ -14,6 +14,8 @@ class Input extends StatelessWidget {
   final void Function(String?)? onChanged;
   final int? maxLines;
   final int? minLines;
+  final bool readOnly;
+  final VoidCallback? onTap;
 
   const Input({
     super.key,
@@ -28,6 +30,8 @@ class Input extends StatelessWidget {
     this.onChanged,
     this.maxLines = 1,
     this.minLines,
+    this.readOnly = false,
+    this.onTap,
   });
 
   @override
@@ -60,6 +64,8 @@ class Input extends StatelessWidget {
           cursorColor: variantColor,
           maxLines: obscureText ? 1 : maxLines,
           minLines: minLines,
+          readOnly: readOnly,
+          onTap: onTap,
           style: TextStyle(
             color: AppColors.text,
             fontSize: 18,

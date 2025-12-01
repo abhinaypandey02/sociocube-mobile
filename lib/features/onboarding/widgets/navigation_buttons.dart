@@ -4,8 +4,11 @@ import '../types.dart';
 import '../styles.dart';
 import '../constants.dart';
 import '../../../core/widgets/button/button.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:sociocube/core/providers/user.dart';
+import 'package:sociocube/core/services/graphql/queries/schema.graphql.dart';
 
-class OnboardingNavigationButtons extends StatelessWidget {
+class OnboardingNavigationButtons extends HookConsumerWidget {
   final int currentStepIndex;
   final OnboardingStepUpdater updateStep;
   final Future<void> Function() onNext;
@@ -22,8 +25,10 @@ class OnboardingNavigationButtons extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    final totalSteps = getTotalOnboardingSteps();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(userProvider);
+    final role = user.value?.user?.role;
+    final totalSteps = totalOnboardingSteps[role ?? Enum$Roles.Creator] ?? 0;
     final isLastStep = currentStepIndex >= totalSteps - 1;
 
     return Padding(

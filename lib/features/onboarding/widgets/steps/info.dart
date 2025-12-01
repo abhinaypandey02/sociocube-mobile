@@ -1,20 +1,18 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:sociocube/core/services/graphql/queries/user.graphql.dart';
 import 'package:sociocube/core/widgets/input/input.dart';
 import '../../../../core/providers/user.dart';
-import '../../../../core/services/graphql/graphql_service.dart';
 import '../../../../core/utils/file_upload.dart';
 import '../../../auth/providers/auth_provider.dart';
 import '../base_step.dart';
 
 // ignore: must_be_immutable
 class InfoStep extends BaseOnboardingStep {
-  TextEditingController? _instagramUsername;
+  TextEditingController? _fullNameController;
+  TextEditingController? _bioController;
   InfoStep({
     super.key,
     required super.stepIndex,
@@ -27,32 +25,11 @@ class InfoStep extends BaseOnboardingStep {
 
   @override
   Future<void> handleNext(WidgetRef ref) async {
-    final user = ref.watch(userProvider);
-    if (user.value?.user?.instagramStats?.username ==
-        _instagramUsername?.text) {
-      return;
-    }
-    final client = ref.read(graphqlServiceProvider.notifier);
-    if (_instagramUsername == null) return;
-
-    final result = await client.mutate(
-      MutationOptions(
-        document: documentNodeMutationUpdateInstagramUsername,
-        variables: Variables$Mutation$UpdateInstagramUsername(
-          username: _instagramUsername!.text,
-        ).toJson(),
-      ),
-    );
-    if (result.data != null) {
-      final response = Mutation$UpdateInstagramUsername.fromJson(result.data!);
-      ref.read(userProvider.notifier).updateUser({
-        ...response.updateInstagramUsername.toJson(),
-        'instagramStats': Query$GetCurrentUser$user$instagramStats(
-          username: _instagramUsername!.text,
-          isVerified: true,
-        ).toJson(),
-      }, skipMutation: true);
-    }
+    if (_fullNameController == null || _bioController == null) return;
+    ref.read(userProvider.notifier).updateUser({
+      'name': _fullNameController?.text,
+      'bio': _bioController?.text,
+    });
   }
 
   @override
@@ -86,9 +63,7 @@ class InfoStep extends BaseOnboardingStep {
             token: auth.value?.accessToken ?? '',
             type: FileUploadType.profilePicture,
           );
-          ref.read(userProvider.notifier).updateUser({
-            'photo': response.url,
-          });
+          ref.read(userProvider.notifier).updateUser({'photo': response.url});
           selectedImage.value = image;
         }
       } catch (e) {

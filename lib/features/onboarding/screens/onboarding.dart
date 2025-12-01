@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:sociocube/core/providers/user.dart';
+import 'package:sociocube/core/services/graphql/queries/schema.graphql.dart';
 import '../widgets/page_indicator.dart';
 import '../constants.dart';
 import '../utils.dart';
@@ -13,7 +15,9 @@ class OnboardingScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Counter to track current onboarding step index
     final currentStepIndex = useState(0);
-    final totalSteps = getTotalOnboardingSteps();
+    final user = ref.watch(userProvider);
+    final role = user.value?.user?.role;
+    final totalSteps = totalOnboardingSteps[role ?? Enum$Roles.Creator] ?? 0;
 
     // Function to update current step using a callback
     void updateStep(int Function(int) updater) {
@@ -42,6 +46,7 @@ class OnboardingScreen extends HookConsumerWidget {
                 currentStepIndex.value,
                 updateStep,
                 handleNext,
+                role ?? Enum$Roles.Creator,
               ),
             ),
 

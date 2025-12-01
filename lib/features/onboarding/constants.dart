@@ -1,20 +1,24 @@
+import 'package:sociocube/core/services/graphql/queries/schema.graphql.dart';
 import 'types.dart';
 import 'widgets/steps/role.dart';
 import 'widgets/steps/socials.dart';
 import 'widgets/steps/info.dart';
+import 'widgets/steps/niche.dart';
 
 // Define all onboarding steps in an array
-const List<OnboardingStepConfig> onboardingSteps = [
-  OnboardingStepConfig(builder: RoleStep.new),
-  OnboardingStepConfig(builder: SocialsStep.new),
-  OnboardingStepConfig(builder: InfoStep.new),
-];
+List<OnboardingStepConfig> getOnboardingSteps(Enum$Roles role) {
+  return [
+    OnboardingStepConfig(builder: RoleStep.new),
+    OnboardingStepConfig(builder: SocialsStep.new),
+    OnboardingStepConfig(builder: InfoStep.new),
+    if (role == Enum$Roles.Creator)
+      OnboardingStepConfig(builder: NicheStep.new),
+  ];
+}
 
 /// Cached value for total number of onboarding steps
-int? _cachedTotalSteps;
-
-/// Get total number of onboarding steps (cached)
-int getTotalOnboardingSteps() {
-  _cachedTotalSteps ??= onboardingSteps.length;
-  return _cachedTotalSteps!;
-}
+Map<Enum$Roles, int> totalOnboardingSteps = {
+  Enum$Roles.Creator: getOnboardingSteps(Enum$Roles.Creator).length,
+  Enum$Roles.Brand: getOnboardingSteps(Enum$Roles.Brand).length,
+  Enum$Roles.Agency: getOnboardingSteps(Enum$Roles.Agency).length,
+};

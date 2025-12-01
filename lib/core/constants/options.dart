@@ -14,3 +14,5 @@ const categories = [
   'News & Politics',      'Law, Rights & Activism',
   'Religion & Spiritual'
 ];
+
+const genders = ["Male", "Female", "Other"];
