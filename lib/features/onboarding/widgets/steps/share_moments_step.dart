@@ -3,8 +3,9 @@ import '../../../../core/theme/theme.dart';
 import '../../styles.dart';
 import '../base_step.dart';
 
+// ignore: must_be_immutable
 class ShareMomentsStep extends BaseOnboardingStep {
-  const ShareMomentsStep({
+  ShareMomentsStep({
     super.key,
     required super.stepIndex,
     required super.updateStep,

@@ -46,7 +46,6 @@ Widget authWrapper({
                 title,
                 style: TextStyle(
                   fontSize: 18,
-                  fontFamily: 'Sans',
                   fontVariations: getVariations(Size.medium, 500),
                   height: 0.5,
                 ),

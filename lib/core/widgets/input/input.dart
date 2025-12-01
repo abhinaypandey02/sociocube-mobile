@@ -36,7 +36,6 @@ class Input extends StatelessWidget {
               style: TextStyle(
                 color: Colors.grey[600],
                 fontSize: 14,
-                fontFamily: 'Sans',
                 fontVariations: getVariations(Size.small, 400),
               ),
             ),
@@ -52,7 +51,6 @@ class Input extends StatelessWidget {
           style: TextStyle(
             color: AppColors.text,
             fontSize: 18,
-            fontFamily: 'Sans',
             fontVariations: getVariations(Size.small, 400),
             letterSpacing: 0,
           ),
@@ -62,7 +60,6 @@ class Input extends StatelessWidget {
             errorStyle: TextStyle(
               color: Colors.red[600],
               fontSize: 12,
-              fontFamily: 'Sans',
               fontVariations: getVariations(Size.small, 400),
             ),
             filled: true,

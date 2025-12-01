@@ -3,12 +3,14 @@ import '../../../core/theme/theme.dart';
 import '../types.dart';
 import '../styles.dart';
 import '../constants.dart';
+import '../../../core/widgets/button/button.dart';
 
 class OnboardingNavigationButtons extends StatelessWidget {
   final int currentStepIndex;
   final OnboardingStepUpdater updateStep;
   final Future<void> Function() onNext;
   final bool isLoading;
+  final bool isDisabled;
 
   const OnboardingNavigationButtons({
     super.key,
@@ -16,6 +18,7 @@ class OnboardingNavigationButtons extends StatelessWidget {
     required this.updateStep,
     required this.onNext,
     this.isLoading = false,
+    this.isDisabled = false,
   });
 
   @override
@@ -33,17 +36,12 @@ class OnboardingNavigationButtons extends StatelessWidget {
             Semantics(
               label: 'Go to previous onboarding step',
               button: true,
-              child: OutlinedButton(
+              child: Button(
                 onPressed: isLoading
                     ? null
                     : () => updateStep((prev) => prev - 1),
-                style: OutlinedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: OnboardingSpacing.buttonHorizontal,
-                    vertical: OnboardingSpacing.buttonVertical,
-                  ),
-                ),
                 child: const Text('Back'),
+                invert: true,
               ),
             )
           else
@@ -55,7 +53,8 @@ class OnboardingNavigationButtons extends StatelessWidget {
                 ? 'Complete onboarding and get started'
                 : 'Go to next onboarding step',
             button: true,
-            child: ElevatedButton(
+            child: Button(
+              disabled: isDisabled,
               onPressed: isLoading
                   ? null
                   : () async {
@@ -64,14 +63,6 @@ class OnboardingNavigationButtons extends StatelessWidget {
                         updateStep((prev) => prev + 1);
                       }
                     },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: OnboardingSpacing.buttonHorizontal,
-                  vertical: OnboardingSpacing.buttonVertical,
-                ),
-              ),
               child: isLoading
                   ? const SizedBox(
                       height: 20,
@@ -81,7 +72,19 @@ class OnboardingNavigationButtons extends StatelessWidget {
                         color: Colors.white,
                       ),
                     )
-                  : Text(isLastStep ? 'Get Started' : 'Next'),
+                  : Row(
+                      children: [
+                        Text(
+                          isLastStep ? 'Get Started' : 'Next',
+                        ),
+                        const SizedBox(width: 8),
+                        const Icon(
+                          Icons.arrow_forward,
+                          size: 16,
+                          color: Colors.white,
+                        ),
+                      ],
+                    ),
             ),
           ),
         ],

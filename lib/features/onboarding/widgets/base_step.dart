@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import '../../../core/widgets/text.dart';
 import '../types.dart';
 import '../styles.dart';
 import 'navigation_buttons.dart';
@@ -7,6 +8,7 @@ import 'navigation_buttons.dart';
 /// Base class for all onboarding step widgets
 /// Handles common configuration and layout structure
 /// Merged from BaseOnboardingStep and OnboardingPageLayout
+// ignore: must_be_immutable
 abstract class BaseOnboardingStep extends HookWidget {
   final int stepIndex;
   final OnboardingStepUpdater updateStep;
@@ -14,8 +16,9 @@ abstract class BaseOnboardingStep extends HookWidget {
   final String title;
   final String subtitle;
   final bool isSkippable;
+  bool isNextEnabled;
 
-  const BaseOnboardingStep({
+  BaseOnboardingStep({
     super.key,
     required this.stepIndex,
     required this.updateStep,
@@ -23,6 +26,7 @@ abstract class BaseOnboardingStep extends HookWidget {
     required this.title,
     required this.subtitle,
     this.isSkippable = false,
+    this.isNextEnabled = true,
   });
 
   /// Override this method to provide the unique content for each step
@@ -47,10 +51,6 @@ abstract class BaseOnboardingStep extends HookWidget {
         isLoading.value = false;
       }
     }
-
-    final subtitleColor = Theme.of(context).brightness == Brightness.dark
-        ? Colors.grey.shade400
-        : Colors.grey.shade700;
 
     return Column(
       children: [
@@ -81,27 +81,31 @@ abstract class BaseOnboardingStep extends HookWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 // Step content (icon, image, etc.)
-                buildStepContent(context),
-                const SizedBox(height: OnboardingSpacing.titleSpacing),
 
                 // Title
                 Text(
                   title,
-                  style: OnboardingTextStyles.title,
-                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 36,
+                    fontVariations: getVariations(Size.medium, 600),
+                    fontFamily: 'Serif',
+                    height: 1.3,
+                  ),
                 ),
-                const SizedBox(height: OnboardingSpacing.subtitleSpacing),
+                const SizedBox(height: 8),
 
                 // Subtitle
                 Text(
                   subtitle,
                   style: TextStyle(
-                    fontSize: OnboardingTextStyles.subtitleFontSize,
-                    color: subtitleColor,
-                    height: OnboardingTextStyles.subtitleHeight,
+                    fontSize: 16,
+                    color: Colors.grey.shade700,
+                    height: 1.5,
                   ),
-                  textAlign: TextAlign.center,
                 ),
+
+                const SizedBox(height: 48),
+                buildStepContent(context),
               ],
             ),
           ),
@@ -113,6 +117,7 @@ abstract class BaseOnboardingStep extends HookWidget {
           updateStep: updateStep,
           onNext: _handleNext,
           isLoading: isLoading.value,
+          isDisabled: !isNextEnabled,
         ),
       ],
     );
