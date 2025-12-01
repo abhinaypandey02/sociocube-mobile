@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/theme/app_colors.dart';
 import '../types.dart';
 import '../styles.dart';
 import '../constants.dart';
@@ -39,8 +40,14 @@ class OnboardingNavigationButtons extends StatelessWidget {
                 onPressed: isLoading
                     ? null
                     : () => updateStep((prev) => prev - 1),
-                child: const Text('Back'),
                 invert: true,
+                child: Row(
+                  children: [
+                    const Icon(Icons.arrow_back, size: 16, color: AppColors.primary),
+                    const SizedBox(width: 8),
+                    const Text('Back'),
+                  ],
+                ),
               ),
             )
           else
@@ -73,9 +80,7 @@ class OnboardingNavigationButtons extends StatelessWidget {
                     )
                   : Row(
                       children: [
-                        Text(
-                          isLastStep ? 'Get Started' : 'Next',
-                        ),
+                        Text(isLastStep ? 'Get Started' : 'Next'),
                         const SizedBox(width: 8),
                         const Icon(
                           Icons.arrow_forward,

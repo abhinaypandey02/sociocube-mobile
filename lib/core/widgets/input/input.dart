@@ -6,22 +6,28 @@ class Input extends StatelessWidget {
   final String? hint;
   final String? label;
   final TextEditingController? controller;
+  final FocusNode? focusNode;
   final bool obscureText;
   final Color variantColor;
   final String? Function(String?)? validator;
   final TextInputType? keyboardType;
   final void Function(String?)? onChanged;
+  final int? maxLines;
+  final int? minLines;
 
   const Input({
     super.key,
     this.hint,
     this.label,
     this.controller,
+    this.focusNode,
     this.obscureText = false,
     this.variantColor = AppColors.primary,
     this.validator,
     this.keyboardType,
     this.onChanged,
+    this.maxLines = 1,
+    this.minLines,
   });
 
   @override
@@ -46,11 +52,14 @@ class Input extends StatelessWidget {
         ],
         TextFormField(
           controller: controller,
+          focusNode: focusNode,
           onChanged: onChanged,
           obscureText: obscureText,
           keyboardType: keyboardType,
           validator: validator,
           cursorColor: variantColor,
+          maxLines: obscureText ? 1 : maxLines,
+          minLines: minLines,
           style: TextStyle(
             color: AppColors.text,
             fontSize: 18,

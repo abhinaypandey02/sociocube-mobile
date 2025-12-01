@@ -5,7 +5,6 @@ class OnboardingSpacing {
   static const double buttonPadding = 24.0;
   static const double buttonHorizontal = 32.0;
   static const double buttonVertical = 16.0;
-  static const double contentPadding = 32.0;
   static const double skipButtonPadding = 16.0;
   static const double skipButtonHeight = 64.0;
 }

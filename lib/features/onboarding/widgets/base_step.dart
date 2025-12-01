@@ -80,7 +80,7 @@ abstract class BaseOnboardingStep extends HookConsumerWidget {
         // Step content
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.all(OnboardingSpacing.contentPadding),
+            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -108,7 +108,7 @@ abstract class BaseOnboardingStep extends HookConsumerWidget {
                   ),
                 ),
 
-                const SizedBox(height: 48),
+                const SizedBox(height: 28),
                 content,
               ],
             ),
