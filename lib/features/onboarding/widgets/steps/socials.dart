@@ -22,14 +22,14 @@ class SocialsStep extends BaseOnboardingStep {
        );
 
   @override
-  Future<void> handleNext(WidgetRef ref) async {
+  Future<bool?> handleNext(WidgetRef ref) async {
     final user = ref.watch(userProvider);
     if (user.value?.user?.instagramStats?.username ==
         _instagramUsername?.text) {
-      return;
+      return false;
     }
     final client = ref.read(graphqlServiceProvider.notifier);
-    if (_instagramUsername == null) return;
+    if (_instagramUsername == null) return false;
 
     final result = await client.mutate(
       MutationOptions(
@@ -49,6 +49,7 @@ class SocialsStep extends BaseOnboardingStep {
         ).toJson(),
       }, skipMutation: true);
     }
+    return true;
   }
 
   @override

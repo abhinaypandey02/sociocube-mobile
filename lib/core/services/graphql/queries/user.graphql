@@ -37,3 +37,7 @@ mutation UpdateUserLocation($updatedLocation: UpdateLocation!) {
       name
     }
   }
+
+  query IsUsernameAvailable($username: String!) {
+    isUsernameAvailable(username:$username)
+  }

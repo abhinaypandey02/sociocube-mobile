@@ -32,7 +32,7 @@ class Selector extends StatelessWidget {
     return Autocomplete<SelectorOption>(
       optionsBuilder: (TextEditingValue textEditingValue) {
         if (textEditingValue.text.isEmpty) {
-          return const Iterable<SelectorOption>.empty();
+          return options.take(20);
         }
         return options.where((SelectorOption option) {
           return option.value.toLowerCase().contains(

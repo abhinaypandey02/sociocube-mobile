@@ -10,6 +10,8 @@ class Input extends StatelessWidget {
   final bool obscureText;
   final Color variantColor;
   final String? Function(String?)? validator;
+  final String? errorText;
+  final String? suffixText;
   final TextInputType? keyboardType;
   final void Function(String?)? onChanged;
   final int? maxLines;
@@ -26,6 +28,8 @@ class Input extends StatelessWidget {
     this.obscureText = false,
     this.variantColor = AppColors.primary,
     this.validator,
+    this.errorText,
+    this.suffixText,
     this.keyboardType,
     this.onChanged,
     this.maxLines = 1,
@@ -75,9 +79,16 @@ class Input extends StatelessWidget {
           decoration: InputDecoration(
             hintText: hint,
             hintStyle: TextStyle(color: Colors.grey[400]),
+            errorText: errorText,
             errorStyle: TextStyle(
               color: Colors.red[600],
               fontSize: 12,
+              fontVariations: getVariations(Size.small, 400),
+            ),
+            suffixText: suffixText,
+            suffixStyle: TextStyle(
+              color: Colors.grey[600],
+              fontSize: 18,
               fontVariations: getVariations(Size.small, 400),
             ),
             filled: true,

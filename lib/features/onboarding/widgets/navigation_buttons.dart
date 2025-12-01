@@ -14,6 +14,7 @@ class OnboardingNavigationButtons extends HookConsumerWidget {
   final Future<void> Function() onNext;
   final bool isLoading;
   final bool isDisabled;
+  final GlobalKey<FormState> formKey;
 
   const OnboardingNavigationButtons({
     super.key,
@@ -22,6 +23,7 @@ class OnboardingNavigationButtons extends HookConsumerWidget {
     required this.onNext,
     this.isLoading = false,
     this.isDisabled = false,
+    required this.formKey,
   });
 
   @override
@@ -48,7 +50,11 @@ class OnboardingNavigationButtons extends HookConsumerWidget {
                 invert: true,
                 child: Row(
                   children: [
-                    const Icon(Icons.arrow_back, size: 16, color: AppColors.primary),
+                    const Icon(
+                      Icons.arrow_back,
+                      size: 16,
+                      color: AppColors.primary,
+                    ),
                     const SizedBox(width: 8),
                     const Text('Back'),
                   ],
@@ -69,6 +75,9 @@ class OnboardingNavigationButtons extends HookConsumerWidget {
               onPressed: isLoading
                   ? null
                   : () async {
+                      if (!formKey.currentState!.validate()) {
+                        return;
+                      }
                       await onNext();
                       if (!isLastStep) {
                         updateStep((prev) => prev + 1);

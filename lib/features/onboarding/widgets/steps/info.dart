@@ -24,12 +24,13 @@ class InfoStep extends BaseOnboardingStep {
        );
 
   @override
-  Future<void> handleNext(WidgetRef ref) async {
-    if (_fullNameController == null || _bioController == null) return;
+  Future<bool?> handleNext(WidgetRef ref) async {
+    if (_fullNameController == null || _bioController == null) return false;
     ref.read(userProvider.notifier).updateUser({
       'name': _fullNameController?.text,
       'bio': _bioController?.text,
     });
+    return true;
   }
 
   @override

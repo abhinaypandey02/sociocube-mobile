@@ -21,9 +21,10 @@ class RoleStep extends BaseOnboardingStep {
        );
 
   @override
-  Future<void> handleNext(WidgetRef ref) async {
+  Future<bool?> handleNext(WidgetRef ref) async {
     final user = ref.read(userProvider.notifier);
     user.updateUser({'role': _selectedRole?.value?.name});
+    return true;
   }
 
   @override

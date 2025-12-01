@@ -37,11 +37,12 @@ abstract class BaseOnboardingStep extends HookConsumerWidget {
 
   /// Override this method to add custom logic when next button is pressed
   /// This will be called before the parent's onNext callback
-  Future<void> handleNext(WidgetRef ref);
+  Future<bool?> handleNext(WidgetRef ref);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isLoading = useState(false);
+    final formKey = useMemoized(() => GlobalKey<FormState>());
     final (content, isNextEnabled) = buildStepContent(context, ref);
 
     Future<void> _handleNext() async {
@@ -49,81 +50,89 @@ abstract class BaseOnboardingStep extends HookConsumerWidget {
 
       isLoading.value = true;
       try {
-        await handleNext(ref);
+        final canProceed = await handleNext(ref);
+        if (canProceed == false) return;
         onNext();
       } finally {
         isLoading.value = false;
       }
     }
 
-    return Column(
-      children: [
-        // Skip button
-        if (isSkippable && !isLoading.value)
-          Padding(
-            padding: const EdgeInsets.all(OnboardingSpacing.skipButtonPadding),
-            child: Align(
-              alignment: Alignment.topRight,
-              child: Semantics(
-                label: 'Skip this onboarding step',
-                button: true,
-                child: TextButton(
-                  onPressed: () => updateStep((prev) => prev + 1),
-                  child: const Text('Skip'),
+    return Form(
+      key: formKey,
+      child: Column(
+        children: [
+          // Skip button
+          if (isSkippable && !isLoading.value)
+            Padding(
+              padding: const EdgeInsets.all(
+                OnboardingSpacing.skipButtonPadding,
+              ),
+              child: Align(
+                alignment: Alignment.topRight,
+                child: Semantics(
+                  label: 'Skip this onboarding step',
+                  button: true,
+                  child: TextButton(
+                    onPressed: () => updateStep((prev) => prev + 1),
+                    child: const Text('Skip'),
+                  ),
                 ),
               ),
-            ),
-          )
-        else
-          const SizedBox(height: OnboardingSpacing.skipButtonHeight),
+            )
+          else
+            const SizedBox(height: OnboardingSpacing.skipButtonHeight),
 
-        // Step content
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Step content (icon, image, etc.)
+          // Step content
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Step content (icon, image, etc.)
 
-                // Title
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 36,
-                    fontVariations: getVariations(Size.medium, 600),
-                    fontFamily: 'Serif',
-                    height: 1.3,
+                  // Title
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 36,
+                      fontVariations: getVariations(Size.medium, 600),
+                      fontFamily: 'Serif',
+                      height: 1.3,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 8),
+                  const SizedBox(height: 8),
 
-                // Subtitle
-                Text(
-                  subtitle,
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.grey.shade700,
-                    height: 1.5,
+                  // Subtitle
+                  Text(
+                    subtitle,
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey.shade700,
+                      height: 1.5,
+                    ),
                   ),
-                ),
 
-                const SizedBox(height: 28),
-                content,
-              ],
+                  const SizedBox(height: 28),
+                  content,
+                ],
+              ),
             ),
           ),
-        ),
 
-        // Navigation buttons
-        OnboardingNavigationButtons(
-          currentStepIndex: stepIndex,
-          updateStep: updateStep,
-          onNext: _handleNext,
-          isLoading: isLoading.value,
-          isDisabled: !isNextEnabled.value,
-        ),
-      ],
+          // Navigation buttons
+          OnboardingNavigationButtons(
+            currentStepIndex: stepIndex,
+            updateStep: updateStep,
+            onNext: _handleNext,
+            isLoading: isLoading.value,
+            isDisabled: !isNextEnabled.value,
+            formKey:formKey
+          ),
+        ],
+      ),
     );
   }
 }

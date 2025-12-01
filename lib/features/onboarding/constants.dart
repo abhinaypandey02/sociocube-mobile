@@ -4,6 +4,7 @@ import 'widgets/steps/role.dart';
 import 'widgets/steps/socials.dart';
 import 'widgets/steps/info.dart';
 import 'widgets/steps/niche.dart';
+import 'widgets/steps/username.dart';
 
 // Define all onboarding steps in an array
 List<OnboardingStepConfig> getOnboardingSteps(Enum$Roles role) {
@@ -13,6 +14,7 @@ List<OnboardingStepConfig> getOnboardingSteps(Enum$Roles role) {
     OnboardingStepConfig(builder: InfoStep.new),
     if (role == Enum$Roles.Creator)
       OnboardingStepConfig(builder: NicheStep.new),
+    OnboardingStepConfig(builder: UsernameStep.new),
   ];
 }
 

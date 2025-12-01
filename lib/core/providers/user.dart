@@ -25,9 +25,12 @@ class UserProvider extends AsyncNotifier<Query$GetCurrentUser?> {
     return null;
   }
 
-  void updateUser(Map<String, dynamic> user, {bool skipMutation = false}) {
+  Future<String?> updateUser(
+    Map<String, dynamic> user, {
+    bool skipMutation = false,
+  }) async {
     final current = state.value;
-    if (current?.user == null) return;
+    if (current?.user == null) return null;
 
     final updatedUserJson = <String, dynamic>{
       ...current!.user!.toJson(),
@@ -48,16 +51,20 @@ class UserProvider extends AsyncNotifier<Query$GetCurrentUser?> {
       }),
     );
     if (!skipMutation) {
-      ref
-          .read(graphqlServiceProvider.notifier)
-          .mutate(
-            MutationOptions(
-              document: documentNodeMutationUpdateUser,
-              variables: Variables$Mutation$UpdateUser(
-                updatedUser: Input$UpdateUserInput.fromJson(user),
-              ).toJson(),
-            ),
-          );
+      try {
+        await ref
+            .read(graphqlServiceProvider.notifier)
+            .mutate(
+              MutationOptions(
+                document: documentNodeMutationUpdateUser,
+                variables: Variables$Mutation$UpdateUser(
+                  updatedUser: Input$UpdateUserInput.fromJson(user),
+                ).toJson(),
+              ),
+            );
+      } catch (e) {
+        return e.toString();
+      }
     }
   }
 }

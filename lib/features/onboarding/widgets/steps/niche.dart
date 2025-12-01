@@ -25,13 +25,14 @@ class NicheStep extends BaseOnboardingStep {
        );
 
   @override
-  Future<void> handleNext(WidgetRef ref) async {
-    if (_gender == null || _categories == null || _categories!.isEmpty) return;
+  Future<bool?> handleNext(WidgetRef ref) async {
+    if (_gender == null || _categories == null || _categories!.isEmpty) return false;
     ref.read(userProvider.notifier).updateUser({
       'gender': _gender,
       'categories': _categories,
       if (_dateOfBirth != null) 'dob': _dateOfBirth!.toIso8601String(),
     });
+    return true;
   }
 
   @override
