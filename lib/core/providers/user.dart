@@ -3,6 +3,8 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:sociocube/core/services/graphql/queries/user.graphql.dart';
 import 'package:sociocube/core/services/graphql/graphql_service.dart';
 
+import '../services/graphql/queries/schema.graphql.dart';
+
 class UserProvider extends AsyncNotifier<Query$GetCurrentUser?> {
   @override
   Query$GetCurrentUser? build() {
@@ -21,6 +23,31 @@ class UserProvider extends AsyncNotifier<Query$GetCurrentUser?> {
       state = AsyncError(result.exception!, StackTrace.current);
     }
     return null;
+  }
+
+  void updateUser(Map<String, dynamic> user, {bool skipMutation = false}) {
+    final current = state.value;
+    if (current?.user == null) return;
+    if (current != null) {
+      state = AsyncData(
+        Query$GetCurrentUser.fromJson({
+          ...current.toJson(),
+          'user': {...current.user!.toJson(), ...user},
+        }),
+      );
+      if (!skipMutation) {
+        ref
+            .read(graphqlServiceProvider.notifier)
+            .mutate(
+              MutationOptions(
+                document: documentNodeMutationUpdateUser,
+                variables: Variables$Mutation$UpdateUser(
+                  updatedUser: Input$UpdateUserInput.fromJson(user),
+                ).toJson(),
+              ),
+            );
+      }
+    }
   }
 }
 

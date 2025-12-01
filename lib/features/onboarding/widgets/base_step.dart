@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../core/widgets/text.dart';
 import '../types.dart';
 import '../styles.dart';
@@ -9,7 +10,7 @@ import 'navigation_buttons.dart';
 /// Handles common configuration and layout structure
 /// Merged from BaseOnboardingStep and OnboardingPageLayout
 // ignore: must_be_immutable
-abstract class BaseOnboardingStep extends HookWidget {
+abstract class BaseOnboardingStep extends HookConsumerWidget {
   final int stepIndex;
   final OnboardingStepUpdater updateStep;
   final VoidCallback onNext;
@@ -30,14 +31,14 @@ abstract class BaseOnboardingStep extends HookWidget {
   });
 
   /// Override this method to provide the unique content for each step
-  Widget buildStepContent(BuildContext context);
+  Widget buildStepContent(BuildContext context, WidgetRef ref);
 
   /// Override this method to add custom logic when next button is pressed
   /// This will be called before the parent's onNext callback
-  Future<void> handleNext();
+  Future<void> handleNext(WidgetRef ref);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final isLoading = useState(false);
 
     Future<void> _handleNext() async {
@@ -45,7 +46,7 @@ abstract class BaseOnboardingStep extends HookWidget {
 
       isLoading.value = true;
       try {
-        await handleNext();
+        await handleNext(ref);
         onNext();
       } finally {
         isLoading.value = false;
@@ -105,7 +106,7 @@ abstract class BaseOnboardingStep extends HookWidget {
                 ),
 
                 const SizedBox(height: 48),
-                buildStepContent(context),
+                buildStepContent(context, ref),
               ],
             ),
           ),

@@ -15,7 +15,11 @@ final authStorageProvider = Provider<AuthStorage>((ref) => AuthStorage());
 class AuthNotifier extends AsyncNotifier<AuthState> {
   @override
   Future<AuthState> build() async {
-    return AuthState(accessToken: await getNewAccessToken());
+    return AuthState();
+  }
+
+  Future<void> initialize() async {
+    state = AsyncData(AuthState(accessToken: await getNewAccessToken()));
   }
 
   Future<void> onComplete() async {

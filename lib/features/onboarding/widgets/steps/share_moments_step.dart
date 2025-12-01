@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../../core/theme/theme.dart';
 import '../../styles.dart';
 import '../base_step.dart';
@@ -18,12 +19,12 @@ class ShareMomentsStep extends BaseOnboardingStep {
        );
 
   @override
-  Future<void> handleNext() async {
+  Future<void> handleNext(WidgetRef ref) async {
     // TODO: Implement share moments logic
   }
 
   @override
-  Widget buildStepContent(BuildContext context) {
+  Widget buildStepContent(BuildContext context, WidgetRef ref) {
     return Container(
       width: OnboardingSize.iconContainerSize,
       height: OnboardingSize.iconContainerSize,

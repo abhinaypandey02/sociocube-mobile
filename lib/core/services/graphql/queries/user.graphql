@@ -20,3 +20,7 @@ query GetCurrentUser {
           id
       }
   }
+
+mutation UpdateUser($updatedUser: UpdateUserInput!) {
+  updateUser(updatedUser: $updatedUser)
+}
