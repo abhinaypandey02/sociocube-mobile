@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../../theme/app_colors.dart';
 import '../text.dart';
 
@@ -12,12 +13,14 @@ class Input extends StatelessWidget {
   final String? Function(String?)? validator;
   final String? errorText;
   final String? suffixText;
+  final String? prefixText;
   final TextInputType? keyboardType;
   final void Function(String?)? onChanged;
   final int? maxLines;
   final int? minLines;
   final bool readOnly;
   final VoidCallback? onTap;
+  final List<TextInputFormatter>? inputFormatters;
 
   const Input({
     super.key,
@@ -30,12 +33,14 @@ class Input extends StatelessWidget {
     this.validator,
     this.errorText,
     this.suffixText,
+    this.prefixText,
     this.keyboardType,
     this.onChanged,
     this.maxLines = 1,
     this.minLines,
     this.readOnly = false,
     this.onTap,
+    this.inputFormatters,
   });
 
   @override
@@ -65,6 +70,7 @@ class Input extends StatelessWidget {
           obscureText: obscureText,
           keyboardType: keyboardType,
           validator: validator,
+          inputFormatters: inputFormatters,
           cursorColor: variantColor,
           maxLines: obscureText ? 1 : maxLines,
           minLines: minLines,
@@ -85,8 +91,14 @@ class Input extends StatelessWidget {
               fontSize: 12,
               fontVariations: getVariations(Size.small, 400),
             ),
-            suffixText: suffixText,
+            suffixText: suffixText != null ? '  $suffixText' : null,
             suffixStyle: TextStyle(
+              color: Colors.grey[600],
+              fontSize: 18,
+              fontVariations: getVariations(Size.small, 400),
+            ),
+            prefixText: prefixText != null ? '$prefixText  ' : null,
+            prefixStyle: TextStyle(
               color: Colors.grey[600],
               fontSize: 18,
               fontVariations: getVariations(Size.small, 400),

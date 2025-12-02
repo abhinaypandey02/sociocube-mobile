@@ -1,0 +1,10 @@
+query GetCities($countryID: Int!, $stateID: Int) {
+    cities: getCities(countryID: $countryID, stateID: $stateID) {
+      value
+      label
+    }
+  }
+
+  mutation UpdateUserLocation($updatedLocation: UpdateLocation!) {
+    updateUserLocation(updatedLocation: $updatedLocation)
+  }

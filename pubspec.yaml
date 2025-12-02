@@ -37,6 +37,7 @@ flutter:
   assets:
     - .env
     - assets/logo/
+    - lib/core/constants/countries.json
 
   fonts:
     - family: Sans

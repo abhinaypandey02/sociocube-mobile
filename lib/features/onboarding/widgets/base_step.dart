@@ -18,7 +18,7 @@ abstract class BaseOnboardingStep extends HookConsumerWidget {
   final String subtitle;
   final bool isSkippable;
 
-  BaseOnboardingStep({
+  const BaseOnboardingStep({
     super.key,
     required this.stepIndex,
     required this.updateStep,

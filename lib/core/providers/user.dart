@@ -66,6 +66,7 @@ class UserProvider extends AsyncNotifier<Query$GetCurrentUser?> {
         return e.toString();
       }
     }
+    return null;
   }
 }
 

@@ -16,6 +16,8 @@ class Selector extends StatelessWidget {
   final void Function(SelectorOption)? onSelected;
   final void Function(String?)? onChanged;
   final Color variantColor;
+  final String? defaultText;
+  final bool? showAll;
 
   const Selector({
     super.key,
@@ -25,20 +27,25 @@ class Selector extends StatelessWidget {
     this.onSelected,
     this.onChanged,
     this.variantColor = AppColors.primary,
+    this.defaultText,
+    this.showAll,
   });
 
   @override
   Widget build(BuildContext context) {
     return Autocomplete<SelectorOption>(
       optionsBuilder: (TextEditingValue textEditingValue) {
+        final length = showAll == true ? options.length : 20;
         if (textEditingValue.text.isEmpty) {
-          return options.take(20);
+          return options.take(length);
         }
-        return options.where((SelectorOption option) {
-          return option.value.toLowerCase().contains(
-            textEditingValue.text.toLowerCase(),
-          );
-        });
+        return options
+            .where((SelectorOption option) {
+              return option.value.toLowerCase().contains(
+                textEditingValue.text.toLowerCase(),
+              );
+            })
+            .take(length);
       },
       displayStringForOption: (SelectorOption option) => option.value,
       onSelected: (SelectorOption selection) {
@@ -128,6 +135,13 @@ class Selector extends StatelessWidget {
             FocusNode focusNode,
             VoidCallback onFieldSubmitted,
           ) {
+            if (defaultText != null && textEditingController.text.isEmpty) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                if (textEditingController.text.isEmpty) {
+                  textEditingController.text = defaultText!;
+                }
+              });
+            }
             return Input(
               label: label,
               hint: hint,

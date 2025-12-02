@@ -63,7 +63,7 @@ class UsernameStep extends BaseOnboardingStep {
         children: [
           Input(
             label: 'Username',
-            hint: 'Enter your username',
+            hint: 'Pick a username',
             controller: usernameController,
             errorText: errorText.value,
             suffixText: ".sociocube.me",

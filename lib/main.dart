@@ -26,6 +26,7 @@ class MainApp extends HookConsumerWidget {
       ref.read(authStateProvider.notifier).initialize().then((_) {
         ref.read(authStateProvider.notifier).onComplete();
       });
+      return null;
     }, []);
 
     return MaterialApp.router(

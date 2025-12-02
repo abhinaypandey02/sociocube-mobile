@@ -103,6 +103,7 @@ class NicheStep extends BaseOnboardingStep {
               selectedCategories.value = [value.value];
               _categories = [value.value];
             },
+            showAll: true,
           ),
           Input(
             label: 'Date of birth',
