@@ -24,7 +24,7 @@ class Avatar extends StatelessWidget {
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: Colors.grey[200],
-          border: Border.all(color: Colors.grey[300]!, width: 2),
+          border: (photoUrl == null || photoUrl!.isEmpty) ? Border.all(color: Colors.grey[300]!, width: 2) : null,
         ),
         child: _buildAvatarContent(),
       ),
