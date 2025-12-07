@@ -1,7 +1,7 @@
 import 'package:go_router/go_router.dart';
 import '../../features/auth/screens/login.dart';
 import '../../features/auth/screens/signup.dart';
-import '../../features/home/screens/home.dart';
+import '../../features/dashboard/screens/wrapper.dart';
 import '../../features/onboarding/screens/onboarding.dart';
 import '../widgets/splash_screen.dart';
 import 'app_routes.dart';
@@ -33,11 +33,11 @@ class RouteConfig {
       builder: (context, state) => const SignupScreen(),
     ),
 
-    // Home route
+    // Home route (now with bottom navigation)
     GoRoute(
       path: AppRoutes.home,
       name: AppRoutes.home,
-      builder: (context, state) => const HomeScreen(),
+      builder: (context, state) => const DashboardWrapper(),
     ),
 
     // Onboarding route

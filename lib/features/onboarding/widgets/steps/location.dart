@@ -90,8 +90,12 @@ class LocationStep extends BaseOnboardingStep {
 
       var isMounted = true;
 
-      ref.read(onboardingCurrencyProvider.notifier).state =
-          selectedCountry.value!.currency;
+      // Delay provider modification to after build phase
+      Future.microtask(() {
+        ref.read(onboardingCurrencyProvider.notifier).state =
+            selectedCountry.value!.currency;
+      });
+
       ref
           .read(graphqlServiceProvider)
           .query(

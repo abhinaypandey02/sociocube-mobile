@@ -30,7 +30,7 @@ class UsernameStep extends BaseOnboardingStep {
     _errorNotifier?.value = null;
 
     final result = await ref.read(userProvider.notifier).updateUser({
-      'username': _usernameController!.text,
+      'username': _usernameController!.text.toLowerCase(),
     });
 
     // If there's an error, set it and return false
