@@ -41,3 +41,44 @@ mutation UpdateUserLocation($updatedLocation: UpdateLocation!) {
   query IsUsernameAvailable($username: String!) {
     isUsernameAvailable(username:$username)
   }
+
+  query GetAccountProfileDetails {
+    user: getCurrentUser {
+        id
+      name
+      email
+      emailVerified
+      bio
+      photo
+      phone
+      categories
+      gender
+      role
+      dob
+      username
+      locationID {
+        city
+        country
+      }
+      location {
+        city
+        country
+        address
+      }
+        instagramStats {
+            username
+            isVerified
+            followers
+            mediaCount
+            er
+            averageLikes
+            averageComments
+        }
+        portfolio {
+            caption
+            id
+            link
+            imageURL
+        }
+    }
+  }

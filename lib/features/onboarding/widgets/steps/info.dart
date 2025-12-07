@@ -1,9 +1,9 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sociocube/core/widgets/input/input.dart';
+import 'package:sociocube/core/widgets/avatar.dart';
 import '../../../../core/providers/user.dart';
 import '../../../../core/utils/file_upload.dart';
 import '../../../auth/providers/auth_provider.dart';
@@ -79,36 +79,9 @@ class InfoStep extends BaseOnboardingStep {
         children: [
           // Profile Image Selector
           Center(
-            child: GestureDetector(
+            child: Avatar(
+              photoUrl: selectedImage.value?.path ?? user.value?.user?.photo,
               onTap: pickImage,
-              child: Container(
-                width: 120,
-                height: 120,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.grey[200],
-                  border: Border.all(color: Colors.grey[300]!, width: 2),
-                ),
-                child: selectedImage.value != null
-                    ? ClipOval(
-                        child: Image.file(
-                          File(selectedImage.value!.path),
-                          fit: BoxFit.cover,
-                        ),
-                      )
-                    : user.value?.user?.photo != null
-                    ? ClipOval(
-                        child: Image.network(
-                          user.value!.user!.photo!,
-                          fit: BoxFit.cover,
-                        ),
-                      )
-                    : Icon(
-                        Icons.add_a_photo,
-                        size: 40,
-                        color: Colors.grey[600],
-                      ),
-              ),
             ),
           ),
           Input(
