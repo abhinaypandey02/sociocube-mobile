@@ -92,8 +92,9 @@ class LocationStep extends BaseOnboardingStep {
 
       // Delay provider modification to after build phase
       Future.microtask(() {
-        ref.read(onboardingCurrencyProvider.notifier).state =
-            selectedCountry.value!.currency;
+        ref
+            .read(onboardingCurrencyProvider.notifier)
+            .updateCurrency(selectedCountry.value!.currency);
       });
 
       ref
