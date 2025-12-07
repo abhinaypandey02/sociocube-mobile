@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import '../../home/screens/home.dart';
+import '../../campaigns/screens/campaigns.dart';
 import '../../profile/screens/profile.dart';
 
 class DashboardWrapper extends HookConsumerWidget {
@@ -11,7 +11,7 @@ class DashboardWrapper extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final currentIndex = useState(0);
 
-    final screens = [const HomeScreen(), const ProfileScreen()];
+    final screens = [const CampaignsScreen(), const ProfileScreen()];
 
     return Scaffold(
       body: IndexedStack(index: currentIndex.value, children: screens),
@@ -28,8 +28,8 @@ class DashboardWrapper extends HookConsumerWidget {
         showUnselectedLabels: false,
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            activeIcon: Icon(Icons.home),
+            icon: Icon(Icons.campaign_outlined),
+            activeIcon: Icon(Icons.campaign),
             label: '',
           ),
           BottomNavigationBarItem(

@@ -1,0 +1,55 @@
+query GetAllPostings($page:Float!) {
+    postings:getAllPostings(page:$page) {
+      id
+      maximumAge
+      minimumFollowers
+      inReview
+      externalLink
+      gender
+      currencyCountry
+      agencies {
+        id
+        name
+        photo
+        username
+        instagramStats {
+          isVerified
+            username
+        }
+      }
+
+        questions {
+            id
+            text
+            required
+        }
+      applicationsCount
+        selectedCount
+        selectedCreators {
+            name
+            photo
+        }
+      description
+      barter
+      minimumAge
+      open
+      title
+      currency
+      price
+      createdAt
+      platform
+      countries
+        states{
+            value
+            label
+        }
+        cities{
+            value
+            label
+        }
+      hasApplied
+      eligibility
+      updatedAt
+      deliverables
+    }
+  }
